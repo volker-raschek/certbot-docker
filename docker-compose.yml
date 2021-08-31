@@ -1,0 +1,9 @@
+version: "3"
+services:
+  certbot:
+    container_name: certbot
+    # certbot command which should be executed
+    command: renew --noninteractive
+    image: volkerraschek/certbot-docker:latest
+    volumes:
+    - /etc/letsencrypt:/etc/letsencrypt
