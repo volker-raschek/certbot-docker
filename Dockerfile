@@ -1,5 +1,5 @@
-FROM docker.io/library/archlinux:latest
+FROM docker.io/library/alpine:latest
 
-RUN pacman --sync --sysupgrade --refresh --noconfirm certbot bind-tools
+RUN apk update && apk add certbot bind-tools
 
 ENTRYPOINT [ "certbot" ]
