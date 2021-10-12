@@ -89,6 +89,9 @@ volumes:
   host:
     path: /var/run/docker.sock
 
+depends_on:
+- linter
+
 trigger:
   branch:
   - master
@@ -144,6 +147,9 @@ volumes:
 - name: docker_socket
   host:
     path: /var/run/docker.sock
+
+depends_on:
+- linter
 
 trigger:
   branch:
@@ -399,6 +405,9 @@ steps:
     status:
     - changed
     - failure
+
+depends_on:
+- latest-manifest
 
 trigger:
   branch:
