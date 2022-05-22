@@ -409,7 +409,7 @@ name: latest-manifest
 
 steps:
 - name: build-manifest
-  image: plugins/manifest
+  image: docker.io/plugins/manifest:latest
   settings:
     auto_tag: false
     ignore_missing: true
@@ -619,7 +619,7 @@ name: tagged-manifest
 
 steps:
 - name: build-manifest
-  image: plugins/manifest
+  image: docker.io/plugins/manifest:latest
   settings:
     auto_tag: true
     ignore_missing: true
