@@ -5,8 +5,8 @@ CONTAINER_RUNTIME?=$(shell which podman)
 
 # CERTBOT_IMAGE_REGISTRY_NAME
 # Defines the name of the new container to be built using several variables.
-CERTBOT_IMAGE_REGISTRY_NAME:=docker.io
-CERTBOT_IMAGE_REGISTRY_USER:=volkerraschek
+CERTBOT_IMAGE_REGISTRY_NAME:=git.cryptic.systems
+CERTBOT_IMAGE_REGISTRY_USER:=volker.raschek
 
 CERTBOT_IMAGE_NAMESPACE?=${CERTBOT_IMAGE_REGISTRY_USER}
 CERTBOT_IMAGE_NAME:=certbot
