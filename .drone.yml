@@ -54,6 +54,9 @@ name: dry-run-amd64
 clone:
   disable: true
 
+depends_on:
+- linter
+
 platform:
   os: linux
   arch: amd64
@@ -98,9 +101,6 @@ steps:
     status:
     - changed
     - failure
-
-depends_on:
-- linter
 
 trigger:
   branch:
@@ -120,6 +120,9 @@ name: dry-run-arm-v7
 clone:
   disable: true
 
+depends_on:
+- linter
+
 platform:
   os: linux
   arch: arm
@@ -165,9 +168,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- linter
-
 trigger:
   branch:
     exclude:
@@ -185,6 +185,9 @@ name: dry-run-arm64-v8
 
 clone:
   disable: true
+
+depends_on:
+- linter
 
 platform:
   os: linux
@@ -231,9 +234,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- linter
-
 trigger:
   branch:
     exclude:
@@ -251,6 +251,9 @@ name: latest-amd64
 
 clone:
   disable: true
+
+depends_on:
+- linter
 
 platform:
   os: linux
@@ -296,9 +299,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- linter
-
 trigger:
   branch:
   - master
@@ -315,6 +315,9 @@ name: latest-arm-v7
 
 clone:
   disable: true
+
+depends_on:
+- linter
 
 platform:
   os: linux
@@ -360,9 +363,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- linter
-
 trigger:
   branch:
   - master
@@ -379,6 +379,9 @@ name: latest-arm64-v8
 
 clone:
   disable: true
+
+depends_on:
+- linter
 
 platform:
   os: linux
@@ -424,9 +427,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- linter
-
 trigger:
   branch:
   - master
@@ -444,12 +444,22 @@ name: latest-manifest
 clone:
   disable: true
 
+depends_on:
+- latest-amd64
+- latest-arm-v7
+- latest-arm64-v8
+
+# docker.io/plugins/manifest only for amd64 architectures available
+node_selector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: amd64
+
 steps:
 - name: clone
   image: git.cryptic.systems/volker.raschek/git:1.2.1
 
 - name: build-manifest
-  image: docker.io/plugins/manifest:latest
+  image: docker.io/plugins/manifest:1.4.0
   settings:
     auto_tag: false
     ignore_missing: true
@@ -480,11 +490,6 @@ steps:
     status:
     - changed
     - failure
-
-depends_on:
-- latest-amd64
-- latest-arm-v7
-- latest-arm64-v8
 
 trigger:
   branch:
@@ -646,8 +651,6 @@ steps:
       from_secret: git_cryptic_systems_container_registry_user
     password:
       from_secret: git_cryptic_systems_container_registry_password
-    build_args:
-    - MARKDOWNLINT_VERSION=${DRONE_TAG}
 
 - name: email-notification
   environment:
@@ -706,8 +709,6 @@ steps:
       from_secret: git_cryptic_systems_container_registry_user
     password:
       from_secret: git_cryptic_systems_container_registry_password
-    build_args:
-    - MARKDOWNLINT_VERSION=${DRONE_TAG}
 
 - name: email-notification
   environment:
@@ -741,12 +742,22 @@ name: tagged-manifest
 clone:
   disable: true
 
+depends_on:
+- tagged-amd64
+- tagged-arm-v7
+- tagged-arm64-v8
+
+# docker.io/plugins/manifest only for amd64 architectures available
+node_selector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: amd64
+
 steps:
 - name: clone
   image: git.cryptic.systems/volker.raschek/git:1.2.1
 
 - name: build-manifest
-  image: docker.io/plugins/manifest:latest
+  image: docker.io/plugins/manifest:1.4.0
   settings:
     auto_tag: true
     ignore_missing: true
@@ -778,11 +789,6 @@ steps:
     - changed
     - failure
 
-depends_on:
-- tagged-amd64
-- tagged-arm-v7
-- tagged-arm64-v8
-
 trigger:
   event:
   - tag
@@ -796,6 +802,9 @@ name: tagged-sync
 
 clone:
   disable: true
+
+depends_on:
+- tagged-manifest
 
 steps:
 - name: clone
@@ -836,9 +845,6 @@ steps:
     status:
     - changed
     - failure
-
-depends_on:
-- tagged-manifest
 
 trigger:
   event:
