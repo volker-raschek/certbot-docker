@@ -1,4 +1,4 @@
-FROM docker.io/library/alpine:3.18.3
+FROM docker.io/library/alpine:3.18.4
 
 RUN apk update && apk add certbot bind-tools
 
